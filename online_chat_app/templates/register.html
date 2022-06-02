@@ -1,0 +1,58 @@
+{% extends 'base_unsigned.html' %}
+
+{% block title %}
+    {{ page_title }}
+{% endblock %}
+
+{% block style %}
+    img {
+      width: 70%;
+    }
+
+    .container {
+      color: black ! important;
+      font-size: 22px ! important;
+
+      width: 26% ! important;
+    }
+
+    .password_forgotten {
+      a:hover { text-shadow: 0 0 5px #ff0000; };
+      text-decoration: none;
+      color: #051ed3;
+      float: left;
+    }
+
+    body {
+      background-color: {{ color }} ! important;
+    }
+{% endblock %}
+
+{% block content %}
+<body class="text-center">
+    <div class="container">
+        <form method="POST" class="form-register">
+            <img src="static/chat_icon.png">
+            <h1 style="font-size: 56px; color:white">{{ page_title }}</h1>
+            <br>
+            <h1 style="font-size:30px">Please Create Your Account</h1>
+
+            {{ form.username.label() }}
+            {{ form.username(class="form-control", placeholder="User Name") }}
+            {{ form.email_address.label() }}
+            {{ form.email_address(class="form-control", placeholder="Email address") }}
+
+            {{ form.password1.label() }}
+            {{ form.password1(class="form-control", placeholder="Password") }}
+
+            {{ form.password2.label() }}
+            {{ form.password2(class="form-control", placeholder="Confirm Password") }}
+            <br>
+            <div style="float: right">
+                {{ form.submit(class="btn btn-lg btn-block btn-primary") }}
+            </div>
+            <br>
+        </form>
+    </div>
+</body>
+{% endblock %}
