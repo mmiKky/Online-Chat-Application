@@ -20,6 +20,12 @@
       transform: translate(-50%, -50%);
     }
 
+    .login {
+      text-decoration: none;
+      font-size: 32px;
+      color: black;
+    }
+
     body {
       background-color: {{ color }} ! important;
     }
@@ -29,9 +35,9 @@
     <div>
         <figure>
             <img src="static/chat_icon.png">
-            <figcaption>{{ page_title }}</figcaption>
+            <figcaption class="display-4" style="font-weight: bold">{{ page_title }}</figcaption>
             <figcaption>
-                <a href="{{ url_for('login_page') }}" style="color: black; font-size: 26px; text-decoration: none">Click here to log in</a>
+                <a class="login" href="{{ url_for('login_page') }}">Click here to log in</a>
             </figcaption>
         </figure>
     </div>

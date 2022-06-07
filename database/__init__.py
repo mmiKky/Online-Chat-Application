@@ -8,6 +8,7 @@ from online_chat_app import app
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///../database/online_chat.db'
 db = SQLAlchemy(app)
+db.create_all()
 bcrypt = Bcrypt(app)    # encrypts passwords in database
 login_manager = LoginManager(app)
 login_manager.login_view = 'login_page'     # set log in page

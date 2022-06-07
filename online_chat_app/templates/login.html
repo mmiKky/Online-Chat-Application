@@ -1,7 +1,7 @@
 {% extends 'base_unsigned.html' %}
 
 {% block title %}
-    {{ page_title }}
+    Log In - {{ page_title }}
 {% endblock %}
 
 {% block style %}
@@ -33,9 +33,10 @@
     <div class="container">
         <form method="POST" class="form-register">
             <img src="static/chat_icon.png">
-            <h1 style="font-size: 56px; color:white">{{ page_title }}</h1>
+            <h1 class="display-4" style="font-weight: bold; font-size: 56px; color:white">{{ page_title }}</h1>
             <br>
             <h1 style="font-size:30px">Please Log Into Your Account</h1>
+            {{ form.hidden_tag() }}
 
             {{ form.username.label() }}
             {{ form.username(class="form-control", placeholder="User Name") }}

@@ -1,6 +1,10 @@
-from flask import render_template
+from flask import render_template, redirect, url_for, flash
+from flask_login import login_user, logout_user, login_required
+
+import online_chat_app
 from online_chat_app import app
 from online_chat_app.forms import RegisterForm, LoginForm
+from database.models import User
 
 PAGE_TITLE = 'ChatBox'
 COLOR = '#08d8db'
@@ -12,17 +16,47 @@ def welcome_page():
 
 
 @app.route('/home')
+@login_required
 def home_page():
     return render_template('home.html')
 
 
-@app.route('/login')
+@app.route('/login', methods=['GET', 'POST'])
 def login_page():
-    form = LoginForm()
-    return render_template('login.html', page_title=PAGE_TITLE, color=COLOR, form=form)
+    login_form = LoginForm()
+
+    # check if user exists in database; if exists check password
+    if login_form.validate_on_submit():
+        user_to_login = User.query.filter_by(username=login_form.username.data).first()
+        if user_to_login and user_to_login.check_password(login_form.password.data):
+            login_user(user_to_login)
+            flash(f'Logged in successfully as {user_to_login.username}', category='success')
+            return redirect(url_for('home_page'))
+        else:
+            flash('Username or password incorrect. Please try again.', category='danger')
+
+    return render_template('login.html', page_title=PAGE_TITLE, color=COLOR, form=login_form)
 
 
-@app.route('/registration')
+@app.route('/registration', methods=['GET', 'POST'])
 def registration_page():
-    form = RegisterForm()
-    return render_template('register.html', page_title=PAGE_TITLE, color=COLOR, form=form)
+    reg_form = RegisterForm()
+    # check if user exists in database; if it doesn't exist create new account
+    if reg_form.validate_on_submit():
+        database_manager = online_chat_app.get_database_manager()
+        database_manager.add_user(username=reg_form.username.data,
+                                  email=reg_form.email_address.data,
+                                  password=reg_form.password1.data)
+        return redirect(url_for('login_page'))
+    if reg_form.errors != {}:   # some errors occurred
+        for err_msg in reg_form.errors.values():
+            flash(f'Error occurred while creating new user: {err_msg}', category='danger')
+
+    return render_template('register.html', page_title=PAGE_TITLE, color=COLOR, form=reg_form)
+
+
+@app.route('/logout')
+def logout_page():
+    logout_user()
+    flash('Log out successfully.', category='info')
+    return redirect(url_for('login_page'))
