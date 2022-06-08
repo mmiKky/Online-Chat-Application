@@ -26,5 +26,7 @@ class User(db.Model, UserMixin):
         return bcrypt.check_password_hash(self.hashed_password, password)
 
 
-# class Friends(db.Model):
-#     id = db.Colum(db.Integer())
+class Friends(db.Model):
+    user_id = db.Column(db.Integer(), db.ForeignKey('user.id'), primary_key=True)
+    friend_id = db.Column(db.Integer(), db.ForeignKey('user.id'), primary_key=True)
+    message = db.Column(db.String())

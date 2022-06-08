@@ -1,9 +1,10 @@
+import flask_login
 from flask import render_template, redirect, url_for, flash
 from flask_login import login_user, logout_user, login_required
 
 import online_chat_app
 from online_chat_app import app
-from online_chat_app.forms import RegisterForm, LoginForm
+from online_chat_app.forms import RegisterForm, LoginForm, SearchFriendForm
 from database.models import User
 
 PAGE_TITLE = 'ChatBox'
@@ -19,6 +20,30 @@ def welcome_page():
 @login_required
 def home_page():
     return render_template('home.html')
+
+
+@app.route('/search', methods=['GET', 'POST'])
+@login_required
+def search_friend_page():
+    form = SearchFriendForm()
+
+    if form.validate_on_submit():
+        user_friend = User.query.filter_by(username=form.username.data).first()
+
+        if user_friend:
+            if user_friend.username != flask_login.current_user.username:
+                database_manager = online_chat_app.get_database_manager()
+                database_manager.add_friend(flask_login.current_user, user_friend)
+                flash(f'User {user_friend.username} added to the friends list.', category='success')
+                return redirect(url_for('home_page'))
+            else:
+                flash(f'You are searching for yourself.', category='info')
+        else:
+            flash('User does not exists. Please make sure you typed user name correctly.', category='danger')
+    if form.errors != {}:   # some errors occurred
+        for err_msg in form.errors.values():
+            flash(f'Error occurred while searching user: {err_msg}', category='info')
+    return render_template('search_friend.html', page_title=PAGE_TITLE, form=form)
 
 
 @app.route('/login', methods=['GET', 'POST'])

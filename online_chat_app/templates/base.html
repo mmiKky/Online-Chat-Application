@@ -19,6 +19,9 @@
         .dropdown-menu a{
             color: grey !important;
             }
+        body{
+            color: white ! important;
+        }
     </style>
     {% block style %}
     {% endblock %}
@@ -26,7 +29,7 @@
   <body>
     <nav class="navbar navbar-expand-md navbar-dark" style="background-color: #08d8db">
       <img src="static/chat_icon_2.png">
-      <a class="navbar-brand" href="#" style="font-size:36px">ChatBox</a>
+      <a class="navbar-brand" href="{{ url_for('home_page') }}" style="font-size:36px">ChatBox</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -34,6 +37,9 @@
         <ul class="navbar-nav ms-auto">
             <li class="nav-item active">
                 <a class="nav-link">{{ current_user.username }}</a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="{{ url_for('search_friend_page') }}">Search User</a>
             </li>
             <li class="nav-item active">
                 <a class="nav-link" href="{{ url_for('logout_page') }}">Logout</a>
@@ -72,9 +78,9 @@
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
   </body>
-  <style>
-    body {
-      color: white
-    }
-  </style>
+<!--  <style>-->
+<!--    body {-->
+<!--&lt;!&ndash;      color: white&ndash;&gt;-->
+<!--    }-->
+<!--  </style>-->
 </html>
