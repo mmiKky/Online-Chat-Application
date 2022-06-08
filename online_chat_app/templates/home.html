@@ -1,3 +1,37 @@
 {% extends 'base.html' %}
 
+{% block title %}
+    {{ page_title }}
+{% endblock %}
 
+{% block style %}
+    .flex-container {
+        display: flex;
+    }
+
+    .flex-child {
+        color: black;
+        flex: 1;
+        border: 3px solid gray;
+    }
+
+    .flex-child:first-child {
+        margin-right: 30px;
+    }
+{% endblock %}
+
+{% block content %}
+    <!--    represents main part of the page: chat + friends list-->
+    <div class="flex-container">
+
+      <div class="flex-child">
+        <p>3efwe</p>
+        <p>3f334t34</p>
+      </div>
+
+      <div class="flex-child">
+        <p>3efwe</p>
+        <p>3f334t34</p>
+      </div>
+    </div>
+{% endblock %}

@@ -19,7 +19,7 @@ def welcome_page():
 @app.route('/home')
 @login_required
 def home_page():
-    return render_template('home.html')
+    return render_template('home.html', page_title=PAGE_TITLE)
 
 
 @app.route('/search', methods=['GET', 'POST'])

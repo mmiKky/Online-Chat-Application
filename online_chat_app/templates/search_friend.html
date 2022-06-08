@@ -10,10 +10,11 @@
 
 {% block content %}
     <body class="text-center">
-        <div class="container" style="color: black">
+        <div class="container" style="color: black; width: 35%">
             <form method="POST" class="form-register">
 
                 <p style="margin-top: 20%; font-size:30px">Please type username, which you want to add to the friends list</p>
+<!--                sometimes validation doesn't work without it-->
                 {{ form.csrf_token }}
 
                 {{ form.username(class="form-control", placeholder="User Name") }}
