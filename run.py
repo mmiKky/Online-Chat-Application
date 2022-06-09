@@ -1,4 +1,4 @@
-from online_chat_app import app
+from online_chat_app import socketio, app
 
 if __name__ == '__main__':
-    app.run(debug=True, port=5001)
+    socketio.run(app, debug=True)

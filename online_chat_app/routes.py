@@ -1,5 +1,5 @@
 import flask_login
-from flask import render_template, redirect, url_for, flash
+from flask import render_template, redirect, url_for, flash, request
 from flask_login import login_user, logout_user, login_required
 
 import online_chat_app
@@ -16,10 +16,19 @@ def welcome_page():
     return render_template('welcome.html', page_title=PAGE_TITLE, color=COLOR)
 
 
-@app.route('/home')
+@app.route('/home', methods=['GET', 'POST'])
 @login_required
 def home_page():
-    return render_template('home.html', page_title=PAGE_TITLE)
+    user_friends = online_chat_app.get_database_manager().get_friends_list(flask_login.current_user)
+    return render_template('home.html', page_title=PAGE_TITLE, users=user_friends)
+
+
+@app.route('/home_chat', methods=['GET', 'POST'])
+@login_required
+def home_page_chat():
+    selected = request.form.get('user')
+    print(online_chat_app.get_database_manager().get_messages(flask_login.current_user.username, selected))
+    return render_template('home_chat.html', page_title=PAGE_TITLE, username=selected)
 
 
 @app.route('/search', methods=['GET', 'POST'])
@@ -85,3 +94,12 @@ def logout_page():
     logout_user()
     flash('Log out successfully.', category='info')
     return redirect(url_for('login_page'))
+
+
+# # server-side event handler
+# @socketio.on('my event')
+# def handle_my_event(data):
+#     print('received message: ' + str(data))
+
+
+
