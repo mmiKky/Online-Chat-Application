@@ -3,7 +3,11 @@ flask-sqlalchemy
 flask-login
 flask-bcrypt
 flask-socketio
+flask-session
+flask-wtf
+email-validator
 wtforms
-Flask-SocketIO==4.3.1
+werkzeug==2.0.1
 python-engineio==3.13.2
+Flask-SocketIO==4.3.1
 python-socketio==4.6.0

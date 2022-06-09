@@ -1,3 +1,7 @@
+<!--This file contains base that is used to create templates, where user is logged-in
+    Design is provided by bootstrap, but small amount of css is applied as well
+ -->
+
 <!doctype html>
 <html lang="en">
   <head>
@@ -49,13 +53,11 @@
             <li class="nav-item active">
                 <a class="nav-link" href="{{ url_for('logout_page') }}">Logout</a>
             </li>
-<!--            <li class="nav-item">-->
-<!--                <a class="nav-link" href="#">Profile</a>-->
-<!--            </li>-->
         </ul>
       </div>
     </nav>
 
+<!--    flashed messages service-->
     {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}
             {% for category, message in messages %}

@@ -2,7 +2,6 @@ import flask_login
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField
 from wtforms.validators import Length, EqualTo, Email, DataRequired, ValidationError
-from database.models import User
 import online_chat_app
 
 MIN_USERNAME_LENGTH = 3
@@ -12,14 +11,14 @@ MAX_USERNAME_LENGTH = 30
 # represents registration panel; contains constraints
 class RegisterForm(FlaskForm):
 
+    # checks if that username already exists in database before creating new one.
     def validate_username(self, username_to_check):
-        user = User.query.filter_by(username=username_to_check.data).first()     # it gives an object
-        if user:
+        if online_chat_app.get_database_manager().check_if_username_exists(username_to_check):
             raise ValidationError('User with that user name already exists. Please try different user name.')
 
+    # checks if that email already was used while creating account before creating new one; 1 email = 1 account
     def validate_email_address(self, email_to_check):
-        user = User.query.filter_by(email=email_to_check.data).first()       # it gives an object
-        if user:
+        if online_chat_app.get_database_manager().check_if_email_exists(email_to_check):
             raise ValidationError('User with that email address already exists. Please try different email address.')
 
     username = StringField(label='User Name:', validators=[Length(min=MIN_USERNAME_LENGTH, max=MAX_USERNAME_LENGTH),
@@ -40,6 +39,7 @@ class LoginForm(FlaskForm):
 # represent search user form; contains constraints
 class SearchFriendForm(FlaskForm):
 
+    # check if username exists in database before trying to log in
     def validate_username(self, username_to_check):
         if online_chat_app.get_database_manager().check_if_friends(flask_login.current_user.username, username_to_check.data):
             raise ValidationError('You are friends already.')

@@ -14,8 +14,8 @@
             <form method="POST" class="form-register">
 
                 <p style="margin-top: 20%; font-size:30px">Please type username, which you want to add to the friends list</p>
-<!--                sometimes validation doesn't work without it-->
-                {{ form.csrf_token }}
+
+                {{ form.csrf_token }}<!--                sometimes validation doesn't work without it-->
 
                 {{ form.username(class="form-control", placeholder="User Name") }}
 

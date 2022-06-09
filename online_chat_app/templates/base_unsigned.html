@@ -1,3 +1,7 @@
+<!--This file contains base that is used to create templates, where user is not logged-in
+    Design is provided by bootstrap
+ -->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -16,6 +20,7 @@
     </style>
 </head>
 <body>
+<!--    flashed messages service-->
     {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}
             {% for category, message in messages %}

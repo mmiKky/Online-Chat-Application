@@ -1,3 +1,5 @@
+<!--This file provides UI for home page - the page that user sees after log-in-->
+
 {% extends 'base.html' %}
 
 {% block title %}
@@ -24,10 +26,12 @@
     <!--    represents main part of the page: chat + friends list-->
     <div class="flex-container">
 
+<!--        chat - it's just a preview of chat; the real one is implemented in home_chat.html-->
       <div class="flex-child">
         <h style="font-size: 30px">Chat with: </h>
         <p>...</p>
       </div>
+<!--        friends list - dropdown menu - user can choose the person to communicate with-->
       <div class="flex-child">
           <form class="form-inline" method="POST" action="{{ url_for('home_page_chat') }}">
             <div class="container">
@@ -43,33 +47,4 @@
       </div>
     </div>
 
-<!--    <script>-->
-<!--        /* When the user clicks on the button,-->
-<!--        toggle between hiding and showing the dropdown content */-->
-<!--        function myFunction() {-->
-<!--          document.getElementById("myDropdown").classList.toggle("show");-->
-<!--        }-->
-
-<!--        // Close the dropdown if the user clicks outside of it-->
-<!--        window.onclick = function(event) {-->
-<!--          if (!event.target.matches('.dropbtn')) {-->
-<!--            var dropdowns = document.getElementsByClassName("dropdown-content");-->
-<!--            var i;-->
-<!--            for (i = 0; i < dropdowns.length; i++) {-->
-<!--              var openDropdown = dropdowns[i];-->
-<!--              if (openDropdown.classList.contains('show')) {-->
-<!--                openDropdown.classList.remove('show');-->
-<!--              }-->
-<!--            }-->
-<!--          }-->
-<!--        }-->
-<!--    </script>-->
-<!--    loads the Socket.IO and establishes a connection -->
-<!--    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js" integrity="sha512-q/dWJ3kcmjBLU4Qc47E4A9kTB4m3wuTY7vkFJDTZKjTs8jhyGQnaUrxa0Ytd0ssMZhbNua9hE+E7Qv1j+DyZwA==" crossorigin="anonymous"></script>-->
-<!--    <script type="text/javascript" charset="utf-8">-->
-<!--        var socket = io();-->
-<!--        socket.on('connect', function() {-->
-<!--            socket.emit('my event', {data: 'I\'m connected!'});-->
-<!--        });-->
-<!--    </script>-->
 {% endblock %}
