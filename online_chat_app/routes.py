@@ -35,7 +35,7 @@ def home_page_chat():
         # set room id
         session['room'] = online_chat_app.get_database_manager().get_room_id(session.get('username'), selected_friend)
         # print(flask_login.current_user.username)
-        # print(online_chat_app.get_database_manager().get_messages(flask_login.current_user.username, selected_friend))
+        print(online_chat_app.get_database_manager().get_messages(flask_login.current_user.username, selected_friend))
         return render_template('home_chat.html', page_title=PAGE_TITLE, username=selected_friend, session=session)
     else:
         if session.get('username') is not None:
@@ -131,6 +131,7 @@ def join(message):
 @socketio.on('text', namespace='/home_chat')
 def text(message):
     room = session.get('room')
+    online_chat_app.get_database_manager().save_message(session.get('username'), room, str(message))
     emit('message', {'msg': session.get('username') + ' : ' + message['msg']}, room=room)
 
 

@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from database import db
 from database.models import User, Friends, Message
 
@@ -118,8 +120,13 @@ class DatabaseManager:
         return messages_list
 
     @staticmethod
-    def save_message(current_username, friend_username, message):
-        pass
+    def save_message(current_username, room_id, message):
+        message = Message(room_id=room_id,
+                          author=DatabaseManager.username_to_user(current_username).id,
+                          content=message,
+                          date=datetime.now())
+        db.session.add(message)
+        db.session.commit()
 
     @staticmethod
     def username_to_user(username):
