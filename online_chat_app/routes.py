@@ -1,9 +1,11 @@
 import flask_login
-from flask import render_template, redirect, url_for, flash, request
+from flask import render_template, redirect, url_for, flash, request, session
 from flask_login import login_user, logout_user, login_required
+from flask_socketio import SocketIO, join_room, leave_room, emit
 
 import online_chat_app
 from online_chat_app import app
+from online_chat_app import socketio
 from online_chat_app.forms import RegisterForm, LoginForm, SearchFriendForm
 from database.models import User
 
@@ -26,9 +28,16 @@ def home_page():
 @app.route('/home_chat', methods=['GET', 'POST'])
 @login_required
 def home_page_chat():
-    selected = request.form.get('user')
-    print(online_chat_app.get_database_manager().get_messages(flask_login.current_user.username, selected))
-    return render_template('home_chat.html', page_title=PAGE_TITLE, username=selected)
+    if request.method == 'POST':
+        selected = request.form.get('user')
+        session['username'] = flask_login.current_user.username
+        session['room'] = online_chat_app.get_database_manager().get_room_id(flask_login.current_user.username, selected)
+        print(flask_login.current_user.username)
+        print(online_chat_app.get_database_manager().get_messages(flask_login.current_user.username, selected))
+        return render_template('home_chat.html', page_title=PAGE_TITLE, username=selected, session=session)
+    else:
+        if session.get('username') is not None:
+            return render_template('chat.html', session = session)
 
 
 @app.route('/search', methods=['GET', 'POST'])
@@ -94,6 +103,30 @@ def logout_page():
     logout_user()
     flash('Log out successfully.', category='info')
     return redirect(url_for('login_page'))
+
+
+@socketio.on('join', namespace='/home_chat')
+def join(message):
+    room = session.get('room')
+    join_room(room)
+    emit('status', {'msg':  session.get('username') + ' has entered the room.'}, room=room)
+
+
+@socketio.on('text', namespace='/home_chat')
+def text(message):
+    room = session.get('room')
+    emit('message', {'msg': session.get('username') + ' : ' + message['msg']}, room=room)
+
+
+@socketio.on('left', namespace='/home_chat')
+def left(message):
+    room = session.get('room')
+    username = session.get('username')
+    leave_room(room)
+    session.clear()
+    emit('status', {'msg': username + ' has left the room.'}, room=room)
+
+
 
 
 # # server-side event handler

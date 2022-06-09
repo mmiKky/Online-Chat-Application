@@ -65,7 +65,10 @@ class DatabaseManager:
             return False
 
     @staticmethod
-    def get_room_id(current_user, friend_user):
+    def get_room_id(current_username, friend_username):
+        current_user = DatabaseManager.username_to_user(current_username)
+        friend_user = DatabaseManager.username_to_user(friend_username)
+
         friends = Friends.query.filter_by(user_id=current_user.id, friend_id=friend_user.id).first()
         if friends:
             return friends.room_id
@@ -83,7 +86,7 @@ class DatabaseManager:
             return []
 
         messages_list = []
-        room_id = DatabaseManager.get_room_id(current_user, friend_user)
+        room_id = DatabaseManager.get_room_id(current_username, friend_username)
         if room_id is not None:
             messages = Message.query.filter_by(room_id=room_id).all()
 
